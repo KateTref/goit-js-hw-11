@@ -13,6 +13,10 @@ let carrentQuery;
 formRef.addEventListener("submit", onSearchPictures);
 let inputValue = "";
 
+function clearResultData() {
+  imageListRef.innerHTML = "";
+}
+
 function renderMarkup(pictures) {
   const markup = pictures.map(createPicturesList).join("");
   imageListRef.insertAdjacentHTML("beforeend", markup);
@@ -37,6 +41,7 @@ function loadingImages(page, query){
 
 async function onSearchPictures(event) {
   event.preventDefault();
+  clearResultData();
     inputValue = formInputRef.value.trim().toLowerCase();
     if (!inputValue) {
       Notify.warning(`Enter, please, any value in the field.`);
