@@ -1,5 +1,6 @@
 export function createPicturesList({webformatURL, largeImageURL, tags, likes, views, comments, downloads}){
     return `
+    <div class=wrapper>
     <a class="photo-card link" href="${largeImageURL}">
   <img class="photo-card__img" src="${webformatURL}" alt="${tags}" width="280px" height="200px" loading="lazy" />
   <div class="info">
@@ -20,5 +21,5 @@ export function createPicturesList({webformatURL, largeImageURL, tags, likes, vi
       ${downloads}
     </p>
   </div>
-</a>`;
+</a></div>`;
 }

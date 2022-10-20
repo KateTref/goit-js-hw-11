@@ -1,11 +1,13 @@
 import './css/styles.css';
 import { Notify } from 'notiflix';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import { getPictures, PER_PAGE } from './pictures';
 import { createPicturesList } from './markup';
 
 const formRef = document.querySelector(".search-form");
 const formInputRef = document.querySelector('.search-form [name="searchQuery"]');
-const imageListRef = document.querySelector(".image-list");
+const imageListRef = document.querySelector(".gallery");
 const loadBtnRef = document.querySelector('.load-more');
 
 let currentPage;
@@ -13,6 +15,7 @@ let currentData;
 let currentQuery;
 let inputValue = "";
 let onClickLoadMoreBtn = null;
+
 
 formRef.addEventListener("submit", onSearchPictures);
 
@@ -36,6 +39,7 @@ async function onSearchPictures(event) {
 function renderMarkup(pictures) {
   const markup = pictures.map(createPicturesList).join("");
   imageListRef.insertAdjacentHTML("beforeend", markup);
+  lightBox.refresh();
 }
 
 function loadingPictures(page, query){
@@ -90,9 +94,14 @@ function loadingPictures(page, query){
 
     function removeLoadMoreBtn() {
       loadBtnRef.classList.add('is-hidden');
-    }
+    };
 
     function getIsVisibleLoadMoreBtn({ totalHits, page}) {
       const pages = Math.ceil(totalHits / PER_PAGE);
       return pages > page;
-    }
+    };
+
+    const lightBox = new SimpleLightbox('.wrapper a', {
+      captionsData: 'alt',
+      captionDelay: 300,
+    });
