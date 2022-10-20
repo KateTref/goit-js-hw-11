@@ -1,7 +1,7 @@
 export function createPicturesList({webformatURL, largeImageURL, tags, likes, views, comments, downloads}){
     return `
-    <a class="photo-card" href="${largeImageURL}">
-  <img class="photo-card__img" src="${webformatURL}" alt="${tags}" loading="lazy" />
+    <a class="photo-card link" href="${largeImageURL}">
+  <img class="photo-card__img" src="${webformatURL}" alt="${tags}" width="280px" height="200px" loading="lazy" />
   <div class="info">
     <p class="info-item">
       <b>Likes</b>

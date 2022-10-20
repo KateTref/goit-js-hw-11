@@ -7,16 +7,18 @@ const formRef = document.querySelector(".search-form");
 const formInputRef = document.querySelector('.search-form [name="searchQuery"]');
 const imageListRef = document.querySelector(".image-list");
 const loadBtnRef = document.querySelector('.load-more');
+
 let currentPage;
 let currentData;
-let carrentQuery;
+let currentQuery;
+let inputValue = "";
+let onClickLoadMoreBtn = null;
 
 formRef.addEventListener("submit", onSearchPictures);
-let inputValue = "";
 
 async function onSearchPictures(event) {
   event.preventDefault();
-  clearResultData();
+  clearResaultList();
     inputValue = formInputRef.value.trim().toLowerCase();
     if (!inputValue) {
       Notify.warning(`Enter, please, any value in the field.`);
@@ -25,9 +27,11 @@ async function onSearchPictures(event) {
     return loadingPictures(1, inputValue)();
     };
 
-function clearResultData() {
-  imageListRef.innerHTML = "";
-}
+
+    function clearResaultList() {
+      imageListRef.innerHTML = "";
+      console.log(imageListRef);
+  }
 
 function renderMarkup(pictures) {
   const markup = pictures.map(createPicturesList).join("");
@@ -53,11 +57,11 @@ function loadingPictures(page, query){
     if(data.totalHits > 0 && page === 1){
       Notify.success(`Hooray! We found ${data.totalHits} images.`)
     }
-    // if (pagesValue > 0 && page === pagesValue) {
-    //   Notify.failure(
-    //     `We're sorry, but you've reached the end of search results.`
-    //   );
-    // }
+    if (pagesValue > 0 && page === pagesValue) {
+      Notify.failure(
+        `We're sorry, but you've reached the end of search results.`
+      );
+    }
     renderMarkup(data.hits);
     onMoreLoading({data, page, query});
   }
@@ -78,12 +82,16 @@ function loadingPictures(page, query){
   
     function addLoadMoreBtn(page, query) {
       loadBtnRef.classList.remove('is-hidden');
-      loadBtnRef.addEventListener('click', loadingPictures(page + 1, query));
+      onClickLoadMoreBtn = loadingPictures(page + 1, query);
+      loadBtnRef.addEventListener('click', onClickLoadMoreBtn, {
+        once: true,
+      });
     };
 
     function removeLoadMoreBtn() {
       loadBtnRef.classList.add('is-hidden');
     }
+
     function getIsVisibleLoadMoreBtn({ totalHits, page}) {
       const pages = Math.ceil(totalHits / PER_PAGE);
       return pages > page;
