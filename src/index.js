@@ -13,7 +13,7 @@ const loadBtnRef = document.querySelector('.load-more');
 let currentPage;
 let currentData;
 let currentQuery;
-let inputValue = "";
+// let inputValue = "";
 let onClickLoadMoreBtn = null;
 
 
@@ -22,7 +22,7 @@ formRef.addEventListener("submit", onSearchPictures);
 async function onSearchPictures(event) {
   event.preventDefault();
   clearResaultList();
-    inputValue = formInputRef.value.trim().toLowerCase();
+    let inputValue = formInputRef.value.trim().toLowerCase();
     if (!inputValue) {
       Notify.warning(`Enter, please, any value in the field.`);
         return;
