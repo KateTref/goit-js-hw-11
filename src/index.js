@@ -24,7 +24,7 @@ const lightBox = new SimpleLightbox('.wrapper a', {
 async function onSearchPictures(event) {
   clearResaultList();
   event.preventDefault();
-  queryParams = formInputRef.value.trim().toLowerCase();
+  let queryParams = formInputRef.value.trim().toLowerCase();
   console.log(queryParams);
   if (!queryParams) {
     Notify.warning(`Enter, please, any value in the field.`);
