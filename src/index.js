@@ -10,18 +10,17 @@ const formInputRef = document.querySelector('.search-form [name="searchQuery"]')
 const imageListRef = document.querySelector(".gallery");
 const loadBtnRef = document.querySelector('.load-more');
 
-let currentPage;
-let currentData;
-let currentQuery;
-// let inputValue = "";
+// let currentPage;
 let onClickLoadMoreBtn = null;
 
 
 formRef.addEventListener("submit", onSearchPictures);
+// loadBtnRef.addEventListener('click', addLoadMoreBtn);
 
 async function onSearchPictures(event) {
-  event.preventDefault();
   clearResaultList();
+  event.preventDefault();
+
     let inputValue = formInputRef.value.trim().toLowerCase();
     if (!inputValue) {
       Notify.warning(`Enter, please, any value in the field.`);
@@ -30,10 +29,10 @@ async function onSearchPictures(event) {
     return loadingPictures(1, inputValue)();
     };
 
-
     function clearResaultList() {
-      imageListRef.innerHTML = "";
       console.log(imageListRef);
+      imageListRef.innerHTML = " ";
+      
   }
 
 function renderMarkup(pictures) {
@@ -43,13 +42,12 @@ function renderMarkup(pictures) {
 }
 
 function loadingPictures(page, query){
-  currentPage = page;
+  
   return async ()=>{
-    let data;
+    let data = [];
     try{
       data = await getPictures({page, query});
       console.log(data);
-      currentData = data;
     }
     catch(event){
       Notify.failure(event.message)
@@ -76,7 +74,7 @@ function loadingPictures(page, query){
     totalHits: data.totalHits,
     page,
   });
-  console.log(haveMorePicture);
+
   if(haveMorePicture){
     addLoadMoreBtn(page, query);
   } else {
@@ -86,10 +84,8 @@ function loadingPictures(page, query){
   
     function addLoadMoreBtn(page, query) {
       loadBtnRef.classList.remove('is-hidden');
-      onClickLoadMoreBtn = loadingPictures(page + 1, query);
-      loadBtnRef.addEventListener('click', onClickLoadMoreBtn, {
-        once: true,
-      });
+      onClickLoadMoreBtn = loadingPictures(page += 1, query);
+      loadBtnRef.addEventListener('click', onClickLoadMoreBtn);
     };
 
     function removeLoadMoreBtn() {
